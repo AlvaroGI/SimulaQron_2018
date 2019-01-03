@@ -37,12 +37,14 @@ def main():
                     print("Bob's measurement outcome in Std basis: " + str(k))
                     base.append(0)
                     measure.append(k)
+                    print("Bobs base length is"+str(len(base)))
                 else:
                     q.H()
                     k = q.measure()
                     print("Bob's measurement outcome in Hadamard basis: " + str(k))
                     base.append(1)
                     measure.append(k)
+                    print("Bobs base length is"+str(len(base)))
                     
                 time.sleep(1)
 
@@ -80,7 +82,15 @@ def main():
         
         print(r'Bob\'s $\Delta$ is '+str(delta))
         
-        key=sum(keep)%2
+        seed=Bob.recvClassical()
+        seed=list(seed)
+        print("Bob received seed"+str(seed))
+        
+        key=0
+        for i in range(len(seed)):
+            key=key+seed[i]*keep[i]
+        
+        key=key%2
         
         print("Bob generated key"+str(key))
         

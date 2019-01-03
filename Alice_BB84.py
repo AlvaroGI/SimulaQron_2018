@@ -71,7 +71,7 @@ def main():
                 #Alice.sendClassical("Bob", enc)
 
                 #print("Alice send the message m={} to Bob".format(m))
-                
+        print("=========================")        
         print("Alice sends"+str(base))
         Alice.sendClassical("Eve",base)
         
@@ -98,7 +98,21 @@ def main():
         delta=d_dyn/len(bob_base)
         print("Alice detected a delta of"+str(delta))
         
-        key=sum(keep)%2
+        #generate the seed
+        seed=[]
+        for i in range(len(keep)):
+            seed.append(random.randint(0,100))
+        print("Alice generated seed"+str(seed))
+        
+        key=0
+        for i in range(len(seed)):
+            key=key+seed[i]*keep[i]
+            
+        key=key%2
+        
+        #Alice sends key to Bob via Eve
+        Alice.sendClassical("Eve",seed)
+        
         print("Alice generated key"+str(key))
                 
                 

@@ -48,6 +48,12 @@ def main():
         print("Eve received from Bob"+str(b_base))
         Eve.sendClassical("Alice",b_base)
         time.sleep(1)
+        
+        #Eve forwards the seed
+        seed=Eve.recvClassical()
+        seed=list(seed)
+        print("Eve received the seed"+str(seed))
+        Eve.sendClassical("Bob",seed)
 
 #################################################################################
 # EXECUTE

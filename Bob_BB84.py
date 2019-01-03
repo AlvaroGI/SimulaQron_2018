@@ -1,6 +1,7 @@
 from SimulaQron.cqc.pythonLib.cqc import CQCConnection
 import random
 import argparse
+import time
 
 ################################################################################
 # PARSE ARGUMENTS
@@ -20,8 +21,12 @@ n = FLAGS.n
 def main():
 
     # Initialize the connection
+    base=[]
+    measure=[]
+    print("Bob's n is"+str(n))
     with CQCConnection("Bob") as Bob:
         for i in range(0,n):
+                print("Bob works on step"+str(i))
                 # Receive qubit from Alice (via Eve)
                 q = Bob.recvQubit()
 
@@ -30,10 +35,16 @@ def main():
                 if basis == 0:
                     k = q.measure()
                     print("Bob's measurement outcome in Std basis: " + str(k))
+                    base.append(0)
+                    measure.append(k)
                 else:
                     q.H()
                     k = q.measure()
                     print("Bob's measurement outcome in Hadamard basis: " + str(k))
+                    base.append(1)
+                    measure.append(k)
+                    
+                time.sleep(1)
 
                 # Receive classical encoded message from Alice
                 #enc = Bob.recvClassical()[0]
@@ -42,6 +53,40 @@ def main():
                 #m = (enc + k) % 2
 
                 #print("Bob retrived the message m={} from Alice.".format(m))
+        
+        Bob.sendClassical("Eve",base)
+        time.sleep(1)
+        
+        
+        print("Here"+str(base))
+        bob_base=0
+        bob_base=Bob.recvClassical()
+        bob_base=list(bob_base)
+        print("Bob received"+str(bob_base))
+        print("Bob's base is"+str(base))
+        
+        d_dyn=0
+        dcard=[]
+        keep=[]
+        for i in range(len(base)):
+            if base[i]!=bob_base[i]:
+                print("Bob detected a base mismatch")
+                d_dyn=d_dyn+1
+                dcard.append(i)
+            else:
+                keep.append(measure[i])
+                continue
+        delta=d_dyn/len(bob_base)
+        
+        print(r'Bob\'s $\Delta$ is '+str(delta))
+        
+        key=sum(keep)%2
+        
+        print("Bob generated key"+str(key))
+        
+        
+        
+        
 
 
 ################################################################################

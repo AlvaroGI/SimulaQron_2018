@@ -70,12 +70,12 @@ def main():
             
         # Attack  -- (q.measure(inplace=True) outputs the post measurement state 
                 #  -- (q.measure()) will destroy the qubit and then you can't forward
-           # basis = random.randint(0, 1)  # 50:50 of guessing basis correctly
-           # if basis == 1:
-            #    q.H()
+            basis = random.randint(0, 1)  # 50:50 of guessing basis correctly
+            if basis == 1:
+                q.H()
             
-           # Eve_basis_memory.append(basis)
-           # Eve_Memory.append(q.measure(inplace=True))%
+            Eve_basis_memory.append(basis)
+            Eve_Memory.append(q.measure(inplace=True))
         # ------------------------------------------------- #
 
         # Forward the qubit to Bob
@@ -90,9 +90,13 @@ def main():
 #-------# To be sure I have this line to send a message to Alice when Eve is ready for the next qubit.------Redundant%
 #-------# (might not be needed)
 #-------    Auth_Send_Classical(Eve, 'Alice', 200, False)------------------------------------------------------------%
-       # Rext_Eve = Auth_Recv_Classical(Eve, 'Alice')
-       # Rext_Eve = list(Rext_Eve)
-       # Auth_Send_Classical(Eve, 'Bob', Rext_Eve, False)  
+        
+        Pub_Key_Eve = list(Auth_Recv_Classical(Eve, 'Alice'))
+        Auth_Send_Classical(Eve, 'Bob', Pub_Key_Eve, False)
+        
+        
+        Rext_Eve = list(Auth_Recv_Classical(Eve, 'Alice'))
+        Auth_Send_Classical(Eve, 'Bob', Rext_Eve, False)  
 
 ##################################################################################################
 main()
@@ -107,3 +111,4 @@ main()
 
 
 ## Also used the autheticated msg receipts 100, 200, 300 etc but there is probably a cleaner way of doing this.
+## In this code Eve only sends qubits when she has received everything. Might be interesting to find out why this is happening.

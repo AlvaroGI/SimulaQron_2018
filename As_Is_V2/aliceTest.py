@@ -71,9 +71,10 @@ def Ext(x, r):
 #
 def main():
 # initialise working dummys
-    n = 10
+    n = 20
+    ErrorThreshold=0.2
     flip, basis = BB84State_decider(n)
-    
+    print("\n-----------------------------Distribution--------------------------------")
 # Initialize the connection
     with CQCConnection("Alice") as Alice:
     
@@ -120,15 +121,13 @@ def main():
         Pub_Key_index = Good_Locs #  If want to use fewer than in Good_Locs, can use this random chice 
                                   #     function, but need to condition it so that it doesnt choose 
                                   #     the same state twice.np.random.choice(Good_Locs, key_length)
-        print("HEY ALice here \n\n  Alice used:", basis, "\n\n    Bob used:", Bob_Basis)
+        print("\n Alice used the basisses:", basis, "\n   Bob used the basisses:", Bob_Basis,"\n")
         
 
     # Send Pub_key_index to Bob
         Pub_Key = list(Pub_Key_index)
-        print("pub key = ", Pub_Key, " PubKey INdex is = ", Pub_Key_index)
-
-        print("\n Alice says the Pub index is ", Pub_Key) 
-        Auth_Send_Classical(Alice, 'Bob', Pub_Key, False)
+        print("\n Alice says to keep measurements", Pub_Key) 
+        Auth_Send_Classical(Alice, 'Eve', Pub_Key, False)
         time.sleep(1)  
     # Create new bistring for Alice with chosen index
         print("\n Alice Measurements are ", flip)
@@ -137,7 +136,25 @@ def main():
            # print("\n useful measurement  is ", i, " and measurement is ", flip[i])
             Alice_Bitstring.append(flip[i])
         print("\n The measurements Alice can use for extraction are", Alice_Bitstring)
-        
+    
+    # Determine error rate
+        Check_Bitstring_Index=list(Auth_Recv_Classical(Alice, 'Bob'))
+        Check_Bitstring_Bob=list(Auth_Recv_Classical(Alice, 'Bob'))
+        Check_Bitstring_Alice=[]
+        for i in Check_Bitstring_Index:
+            Check_Bitstring_Alice.append(Alice_Bitstring[i])
+        print("Alice checks the measurements", Check_Bitstring_Index, "which are", Check_Bitstring_Alice)
+        ErrorAmount=0
+        for i in range(0,len(Check_Bitstring_Alice)):
+            if Check_Bitstring_Alice[i] != Check_Bitstring_Bob[i]:
+                ErrorAmount=ErrorAmount+1        
+        print("Alice concludes there have been ", ErrorAmount, "errors \n")
+        ErrorRate=ErrorAmount/len(Check_Bitstring_Alice)
+        print("The Errorrate is", ErrorRate)
+        if ErrorRate > ErrorThreshold:
+           print("Errorrate too high, Alice aborts protecol \n")
+           Auth_Send_Classical(Alice,'Eve', 222, False)
+           exit()   
     # Create the random bit string for the extractor
         R_ext = [random.randint(0, 1) for a in range(0, Pub_Key_index.size)]
         print("\n Alice random part of the extractor is", R_ext)
@@ -150,7 +167,7 @@ def main():
 
     # Send the random part over.
         R_ext=list(R_ext)
-        Auth_Send_Classical(Alice, 'Bob', R_ext, False)
+        Auth_Send_Classical(Alice, 'Eve', R_ext, False)
         
 
 

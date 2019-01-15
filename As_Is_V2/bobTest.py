@@ -44,6 +44,7 @@ def Ext(x, r):
 # main
 #
 def main():
+    Num_to_check=3
 # Define Bob_Memory, enc (= Encoded message)
     meas = []
     Bob_basis_memory = []
@@ -84,14 +85,12 @@ def main():
 #       # All data  sent --------------------------------------------------------
 #               break
 
+        print("-------------------------------Selection--------------------------------")
     # Send Alice your Basis choice 
         Auth_Send_Classical(Bob, 'Eve', Bob_basis_memory, False)
         
-        
-        print(" HI FROM BOB")
     # Wait for reply with the decided outcomes to use
-        Pub_Key_index = Auth_Recv_Classical(Bob, 'Alice')
-        Pub_Key_index = list(Pub_Key_index)
+        Pub_Key_index = list(Auth_Recv_Classical(Bob, 'Eve'))
         # Pub_Key_index= np.array(Pub_Key_index)
 
         print("\n Bob says the Pub index is ", Pub_Key_index)
@@ -101,16 +100,26 @@ def main():
         print("\n Bobs Measurements are ", meas)
         Bob_Bitstring = []
         for i in Pub_Key_index:
-         # print("\n useful measurement  is ", i, " and measurement is ", flip[i])
+         # print("\n useful measurement  is ", i, " and measurement is ", meas[i])
          Bob_Bitstring.append(meas[i])
         print("\n The measurements Bob can use for extraction are", Bob_Bitstring)
                                                                       
-       
+    # Randomly select bits from bitstring to check if Eve has attacked
+        Check_Bitstring_Index = random.sample(range(0,len(Bob_Bitstring)),round(n/4))
+        Check_Bitstring=[]
+        for i in Check_Bitstring_Index:
+            Check_Bitstring.append(Bob_Bitstring[i])
+        print("Bob wants to check the measurements", Check_Bitstring_Index, "which are", Check_Bitstring)
+        Auth_Send_Classical(Bob, 'Alice', Check_Bitstring_Index, False)
+        Auth_Send_Classical(Bob, 'Alice', Check_Bitstring, False)
+           
        
     
     # Wait to recieve the Public Random key (for extractor)
-        R_ext = Auth_Recv_Classical(Bob, 'Alice')
-        R_ext=list(R_ext)
+        R_ext = list(Auth_Recv_Classical(Bob, 'Eve'))
+        if R_ext == [222]:
+            print("Errorrate is too high, Bob aborts protocol \n")
+            exit()
         print("\n The random part of the extraction Bob is using is", R_ext)
         
         

@@ -4,6 +4,8 @@ import random
 
 import numpy as np
 import time
+from datetime import datetime
+
 #----------------------------------------
 def BB84State_decider(n):
     flip = [random.randint(0, 1) for f in range(0, n)]
@@ -72,7 +74,7 @@ def Ext(x, r):
 def main():
 # initialise working dummys
     n = 20
-    ErrorThreshold=0.2
+    ErrorThreshold=0.9
     flip, basis = BB84State_decider(n)
     print("\n-----------------------------Distribution--------------------------------")
 # Initialize the connection
@@ -166,6 +168,13 @@ def main():
         key = Ext(Alice_Bitstring, R_ext)
         #print("\n Alice has retreived the secure key", key)
         print("Alice's private key:", key)
+
+    # Save key into a file
+        date_ = str(datetime.now().date())
+        time_ = str(datetime.now().time())
+        file = open("logs_keys/%s_%s.txt" % (date_,time_),"a")
+        file.write(str(key))
+        file.close()
 
     # Send the random part over.
         R_ext=list(R_ext)

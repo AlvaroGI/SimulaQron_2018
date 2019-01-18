@@ -15,18 +15,31 @@ Alice and Bob want to generate a shared private key. To do that, we implement a 
 Before running our project, be sure to have SimulaQron installed and running on your computer (see [SimulaQron guide](https://softwarequtech.github.io/SimulaQron/html/GettingStarted.html))
 
 #### Before running
-export
+First, be sure to have executed 
 ```
-startAll
+export NETSIM=YOURPATH/SimulaQron
+export PYTHONPATH=YOURPATH:$PYTHONPATH
 ```
+where YOURPATH corresponds to the directory in which you have installed SimulaQron (e.g. a virtualenv).
+
+To start the network with three nodes (Alice, Bob and Eve), run
+```
+startAll.sh
+```
+in the 'main' directory.
 
 #### Running the project
 -In the 'main' directory, you can find the codes needed to run the simulations.
 
 #### Common errors
-close ports
-wait after running startAll
+Sometimes, a process is running in the local ports that we use to create the simulated network. If you get a related error, just restart those ports. If you are using OS X, you can simply run 'sh clean_ports_Mac.sh'. Note that this will kill all the processes running on local ports 8801 to 8809. Be sure that you are not killing something important.
+
+If there is an issue with the communication in the network, you can restart the local ports, run 'startAll.sh', and wait for a while until all the remaining communications from previous processes are done.
 
 # Useful resources
 * [This project Github](https://github.com/AlvaroGI/SimulaQron_2018).
 * [SimulaQron](https://softwarequtech.github.io/SimulaQron/html/GettingStarted.html).
+
+
+
+

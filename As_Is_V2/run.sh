@@ -8,9 +8,9 @@ fi
 # Default values
 n_key=3
 attack=0
-n_qubits=10
+n_qubits=20
 f_test=0.5
-error_threshold=0.2
+error_threshold=0.1
 
 while getopts n:a:q:t:e: option
 do

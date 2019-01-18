@@ -15,7 +15,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--q', type=int, default='20',
                     help='Number of qubits.')
 
-parser.add_argument('--e', type=float, default='0.2',
+parser.add_argument('--e', type=float, default='0.1',
                     help='Error threshold (%).')
 
 FLAGS = parser.parse_args()
@@ -105,6 +105,25 @@ def IceWall():
     x = 1
     while x == 1:
         pass
+
+#----------------------------------------
+
+def get_raw_key(xo, test_ind):
+    '''Get a list with the elements from xo whose indices are not in test_ind.
+        ---Inputs---
+            xo: remaining bit string obtained after checking bases-matching (list).
+            test_ind: test rounds (list with elements between 0 and len(xo)).
+        ---Outputs---
+            x: raw key (list).'''
+    x = []
+
+    for i in range(0,len(xo)):
+        if i in test_ind:
+            pass
+        else:
+            x.append(xo[i])
+
+    return x
 
 #----------------------------------------
 
@@ -207,12 +226,16 @@ def main():
         #-------------------------------------------------
         # GENERATE PRIVATE KEY (PRIVACY AMPLIFICATION)
         #-------------------------------------------------
+        # Get raw key from the bitstring that includes the test rounds
+        Alice_raw_key = get_raw_key(Alice_Bitstring, test_indices)
+
         # Create the random seed for the randomness extractor
-        R_ext = [random.randint(0, 1) for a in range(0, matching_indices.size)]
-        print("\n Alice's random seed for the extractor:", R_ext)
+        R_ext = [random.randint(0, 1) for a in range(0, len(Alice_raw_key))]
 
         # Apply extractor on Alice's raw key
-        key = Ext(Alice_Bitstring, R_ext)
+        key = Ext(Alice_raw_key, R_ext)
+        print("\n Alice's raw key:", Alice_raw_key)
+        print(" Alice's random seed for the extractor:", R_ext)
         print("Alice's private key:", key)
 
         # Save key into a file

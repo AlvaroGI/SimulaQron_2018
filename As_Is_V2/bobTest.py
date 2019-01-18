@@ -63,6 +63,25 @@ def IceWall():
 
 #----------------------------------------
 
+def get_raw_key(xo, test_ind):
+    '''Get a list with the elements from xo whose indices are not in test_ind.
+        ---Inputs---
+            xo: remaining bit string obtained after checking bases-matching (list).
+            test_ind: test rounds (list with elements between 0 and len(xo)).
+        ---Outputs---
+            x: raw key (list).'''
+    x = []
+
+    for i in range(0,len(xo)):
+        if i in test_ind:
+            pass
+        else:
+            x.append(xo[i])
+
+    return x
+
+#----------------------------------------
+
 def Ext(x, r):
     '''Simple randomness extractor that XORs bit strings x and r.
         ---Inputs---
@@ -149,15 +168,19 @@ def main():
         #-------------------------------------------------
         # GENERATE PRIVATE KEY (PRIVACY AMPLIFICATION)
         #-------------------------------------------------
+        # Get raw key from the bitstring that includes the test rounds
+        Bob_raw_key = get_raw_key(Bob_Bitstring, test_indices)
+
         # Receive the random seed from Alice (for extractor)
         R_ext = list(Auth_Recv_Classical(Bob, 'Eve'))
         if R_ext == [222]:
             print("(!) Errorrate is too high, Bob aborts protocol \n")
             exit()
-        print("\n Bob's raw key:", R_ext)
 
         # Apply extractor on Bob's raw key
-        key = Ext(Bob_Bitstring, R_ext)
+        key = Ext(Bob_raw_key, R_ext)
+        print("\n Bob's raw key:", Bob_raw_key)
+        print(" Bob's is told by Alice this random seed:", R_ext)
         print("Bob's private key:", key)
 
 ################################################################################

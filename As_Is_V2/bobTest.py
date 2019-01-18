@@ -3,6 +3,17 @@ from SimulaQron.cqc.pythonLib.cqc import CQCConnection
 import random
 
 import numpy as np
+import argparse
+
+################################################################################
+# PARSE ARGUMENTS
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--t', type=int, default='5',
+                    help='Number of test bits.')
+
+FLAGS = parser.parse_args()
+################################################################################
 
 #  Classical authentification channel #########################################################
 ###############################################################################################
@@ -44,7 +55,7 @@ def Ext(x, r):
 # main
 #
 def main():
-    Num_to_check=3
+    Num_to_check=FLAGS.t
 # Define Bob_Memory, enc (= Encoded message)
     meas = []
     Bob_basis_memory = []

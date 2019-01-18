@@ -3,6 +3,20 @@ from SimulaQron.cqc.pythonLib.cqc import CQCConnection
 import random
 
 import numpy as np
+import argparse
+
+################################################################################
+# PARSE ARGUMENTS
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--a', type=int, default='0',
+                    help='Attack (1) or not (0).')
+
+FLAGS = parser.parse_args()
+
+attack = FLAGS.a
+################################################################################
+
 
 #  Classical authentification channel #########################################################
 ###############################################################################################
@@ -70,15 +84,16 @@ def main():
 
         # Attack  -- (q.measure(inplace=True) outputs the post measurement state
                 #  -- (q.measure()) will destroy the qubit and then you can't forward
-            basis = random.randint(0, 1)  # 50:50 of guessing basis correctly
-            if basis == 1:
-                q.H()
+            if attack == 1:
+                basis = random.randint(0, 1)  # 50:50 of guessing basis correctly
+                if basis == 1:
+                    q.H()
 
-            Eve_basis_memory.append(basis)
-            Eve_Memory.append(q.measure(inplace=True))
+                Eve_basis_memory.append(basis)
+                Eve_Memory.append(q.measure(inplace=True))
 
         # No attack
-
+            #Do nothing
 
         # ------------------------------------------------- #
 

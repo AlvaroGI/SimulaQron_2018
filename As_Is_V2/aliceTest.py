@@ -5,6 +5,20 @@ import random
 import numpy as np
 import time
 from datetime import datetime
+import argparse
+
+################################################################################
+# PARSE ARGUMENTS
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--q', type=int, default='20',
+                    help='Number of qubits.')
+
+parser.add_argument('--e', type=float, default='0.2',
+                    help='Error threshold (%).')
+
+FLAGS = parser.parse_args()
+################################################################################
 
 #----------------------------------------
 def BB84State_decider(n):
@@ -73,8 +87,8 @@ def Ext(x, r):
 #
 def main():
 # initialise working dummys
-    n = 20
-    ErrorThreshold=0.9
+    n = FLAGS.q
+    ErrorThreshold = FLAGS.e
     flip, basis = BB84State_decider(n)
     print("\n-----------------------------Distribution--------------------------------")
 # Initialize the connection

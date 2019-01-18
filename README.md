@@ -1,5 +1,5 @@
 # SimulaQron_2018
-Quantum cryptography project using SimulaQron, by QuTech.
+Quantum cryptography project based on SimulaQron (by QuTech).
 
 # Useful resources
 Getting started (SimulaQron): https://softwarequtech.github.io/SimulaQron/html/GettingStarted.html
@@ -10,3 +10,6 @@ Atom (a pretty nice code editor): https://atom.io
 
 # Tips
 Do not use any space or accent in the path you are working. They may cause problems.
+
+# Authors
+Gómez Iñesta, Álvaro

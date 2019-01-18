@@ -212,7 +212,6 @@ def main():
         print("\n Alice's random seed for the extractor:", R_ext)
 
         # Apply extractor on Alice's raw key
-        key = []
         key = Ext(Alice_Bitstring, R_ext)
         print("Alice's private key:", key)
 

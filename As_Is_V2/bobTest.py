@@ -10,8 +10,8 @@ import argparse
 ################################################################################
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--t', type=int, default='5',
-                    help='Number of test bits.')
+parser.add_argument('--t', type=float, default='0.5',
+                    help='Fraction of matching-bases rounds used for test.')
 
 FLAGS = parser.parse_args()
 
@@ -78,8 +78,7 @@ def Ext(x, r):
 # MAIN
 ################################################################################
 def main():
-    # Define number of test bits and parameters for the generation of BB84 states
-    Num_to_check=FLAGS.t
+    # Define parameters for the generation of BB84 states
     Bob_outputs = [] # Bob's measurements on the qubits (list)
     Bob_basis_memory = [] # Bob's bases (list)
     coun = 0
@@ -131,8 +130,15 @@ def main():
         # TEST: ERROR RATE COMPUTATION
         #----------------------------------------
         print("\n--------------------------------Test--------------------------------")
-        # Randomly pick test rounds
-        test_indices = random.sample(range(0,len(Bob_Bitstring)),round(n/4))
+        # Randomly pick test rounds (we ensure that there is at least 1 test
+        # round and 1 bit remaining for the raw key)
+        test_rounds_num = round(len(Bob_Bitstring)*FLAGS.t)
+        if test_rounds_num<1:
+            test_rounds_num = 1
+        elif test_rounds_num>len(Bob_Bitstring)-1:
+            test_rounds_num = len(Bob_Bitstring)-1
+
+        test_indices = random.sample(range(0,len(Bob_Bitstring)),test_rounds_num)
         test_Bob=[]
         for i in test_indices:
             test_Bob.append(Bob_Bitstring[i])
@@ -151,7 +157,6 @@ def main():
         print("\n Bob's raw key:", R_ext)
 
         # Apply extractor on Bob's raw key
-        key = []
         key = Ext(Bob_Bitstring, R_ext)
         print("Bob's private key:", key)
 

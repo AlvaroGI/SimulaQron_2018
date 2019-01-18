@@ -12,7 +12,7 @@ Alice and Bob want to generate a shared private key. To do that, we implement a 
 
 # Usage
 #### Requirements
-Be sure to have SimulaQron installed and running on your computer (see [SimulaQron guide](https://softwarequtech.github.io/SimulaQron/html/GettingStarted.html))
+Be sure to have SimulaQron installed and running on your computer (see [SimulaQron guide](https://softwarequtech.github.io/SimulaQron/html/GettingStarted.html)).
 
 #### Before running
 First, be sure to have executed 
@@ -36,9 +36,10 @@ You can find the codes needed to run the simulations in the 'main' directory:
 	- a - no attack (0), attack measuring in Hadamard or Standard basis at random (1), or attack using the optimal POVM (2).
 	- t - fraction of matching-basis rounds used for test.
 	- e - error threshold (%).
-	As an example, `sh run.sh -q 18 -a 0 -t 0.5 -e 0.1` takes 18 qubits in the simulation, no attack is performed, half of the matching-basis rounds are used for test, and the error threshold is 10%.
 * **aliceTest.py** / **bobTest.py** / **eveTest.py**: Python codes for Alice, Bob and Eve. Feel free to check them out (they are described in deep with comments inside the files).
 * **clean_ports_Mac.sh**: if you are working on OS X, this will close all the processes running on local ports 8801 to 8809.
+
+As an example, `sh run.sh -q 18 -a 0 -t 0.5 -e 0.1` takes 18 qubits in the simulation, no attack is performed, half of the matching-basis rounds are used for test, and the error threshold is 10%.
 
 #### Common errors
 Sometimes, a process is running in the local ports that we use to create the simulated network. If you get a related error, you can restart those ports. If you are using OS X, you can simply run `sh clean_ports_Mac.sh`. Note that this will kill all the processes running on local ports 8801 to 8809. Be sure that you are not killing something important.

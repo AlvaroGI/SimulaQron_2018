@@ -32,9 +32,9 @@ in the 'main' directory.
 -In the 'main' directory, you can find the codes needed to run the simulations.
 
 #### Common errors
-Sometimes, a process is running in the local ports that we use to create the simulated network. If you get a related error, just restart those ports. If you are using OS X, you can simply run 'sh clean_ports_Mac.sh'. Note that this will kill all the processes running on local ports 8801 to 8809. Be sure that you are not killing something important.
+Sometimes, a process is running in the local ports that we use to create the simulated network. If you get a related error, just restart those ports. If you are using OS X, you can simply run `sh clean_ports_Mac.sh`. Note that this will kill all the processes running on local ports 8801 to 8809. Be sure that you are not killing something important.
 
-If there is an issue with the communication in the network, you can restart the local ports, run 'startAll.sh', and wait for a while until all the remaining communications from previous processes are done.
+If there is an issue with the communication in the network, you can restart the local ports, run `sh startAll.sh`, and wait for a while until all the 'remaining communications' from previous processes are done.
 
 # Useful resources
 * [This project Github](https://github.com/AlvaroGI/SimulaQron_2018).

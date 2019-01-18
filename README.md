@@ -28,4 +28,5 @@ close ports
 wait after running startAll
 
 # Useful resources
-Getting started (SimulaQron): https://softwarequtech.github.io/SimulaQron/html/GettingStarted.html
+* [This project Github](https://github.com/AlvaroGI/SimulaQron_2018).
+* [SimulaQron](https://softwarequtech.github.io/SimulaQron/html/GettingStarted.html).

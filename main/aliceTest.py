@@ -199,8 +199,8 @@ def main():
         # TEST: ERROR RATE COMPUTATION
         #----------------------------------------
         # Prepare test measurements
-        test_indices=list(Auth_Recv_Classical(Alice, 'Bob')) # Test indices suggested by Bob
-        test_Bob=list(Auth_Recv_Classical(Alice, 'Bob')) # Bob's test measurements
+        test_indices=list(Auth_Recv_Classical(Alice, 'Eve')) # Test indices suggested by Bob
+        test_Bob=list(Auth_Recv_Classical(Alice, 'Eve')) # Bob's test measurements
 
         test_Alice=[] # Alice's test measurements
         for i in test_indices:
@@ -226,7 +226,7 @@ def main():
         #-------------------------------------------------
         # GENERATE PRIVATE KEY (PRIVACY AMPLIFICATION)
         #-------------------------------------------------
-        # Get raw key from the bitstring that includes the test rounds
+        # Get raw key from the bitstring that included the test rounds
         Alice_raw_key = get_raw_key(Alice_Bitstring, test_indices)
 
         # Create the random seed for the randomness extractor

@@ -11,7 +11,7 @@ import argparse
 parser = argparse.ArgumentParser()
 
 parser.add_argument('--t', type=float, default='0.5',
-                    help='Fraction of matching-bases rounds used for test.')
+                    help='Fraction of matching-basis rounds used for test.')
 
 FLAGS = parser.parse_args()
 
@@ -162,13 +162,15 @@ def main():
         for i in test_indices:
             test_Bob.append(Bob_Bitstring[i])
         print("\n Bob wants to test measurements number", test_indices, ", whose results are", test_Bob)
-        Auth_Send_Classical(Bob, 'Alice', test_indices, False)
-        Auth_Send_Classical(Bob, 'Alice', test_Bob, False)
+
+        # Send rounds used for test and corresponding measurements to Alice (via Eve)
+        Auth_Send_Classical(Bob, 'Eve', test_indices, False)
+        Auth_Send_Classical(Bob, 'Eve', test_Bob, False)
 
         #-------------------------------------------------
         # GENERATE PRIVATE KEY (PRIVACY AMPLIFICATION)
         #-------------------------------------------------
-        # Get raw key from the bitstring that includes the test rounds
+        # Get raw key from the bitstring that included the test rounds
         Bob_raw_key = get_raw_key(Bob_Bitstring, test_indices)
 
         # Receive the random seed from Alice (for extractor)

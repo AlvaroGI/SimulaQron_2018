@@ -66,6 +66,25 @@ def IceWall():
 
 #----------------------------------------
 
+def get_raw_key(xo, test_ind):
+    '''Get a list with the elements from xo whose indices are not in test_ind.
+        ---Inputs---
+            xo: remaining bit string obtained after checking bases-matching (list).
+            test_ind: test rounds (list with elements between 0 and len(xo)).
+        ---Outputs---
+            x: raw key (list).'''
+    x = []
+
+    for i in range(0,len(xo)):
+        if i in test_ind:
+            pass
+        else:
+            x.append(xo[i])
+
+    return x
+
+#----------------------------------------
+
 def Ext(x, r):
     '''Simple randomness extractor that XORs bit strings x and r.
         ---Inputs---
@@ -138,9 +157,15 @@ def main():
         Auth_Send_Classical(Eve, 'Alice', Bob_basis_Eve, False)
 
         # Receive and forward matching bases
-        matches_Eve = list(Auth_Recv_Classical(Eve, 'Alice'))
-        Auth_Send_Classical(Eve, 'Bob', matches_Eve, False)
-        matches_Eve=list(matches_Eve)
+        matching_indices = list(Auth_Recv_Classical(Eve, 'Alice'))
+        Auth_Send_Classical(Eve, 'Bob', matching_indices, False)
+        #matching_indices = list(matching_indices)
+
+        # Receive and forward test indices
+        test_indices = list(Auth_Recv_Classical(Eve, 'Bob')) # Test indices suggested by Bob
+        Auth_Send_Classical(Eve, 'Alice', test_indices, False)
+        test_Bob = list(Auth_Recv_Classical(Eve, 'Bob')) # Bob's test measurements
+        Auth_Send_Classical(Eve, 'Alice', test_Bob, False)
 
         # Receive and forward random seed
         Rext_Eve = list(Auth_Recv_Classical(Eve, 'Alice'))
@@ -154,12 +179,21 @@ def main():
         #--------------------------------------------------------------
         # If Eve performed an attack, try to find the key
         if attack==1 or attack==2:
-            Eve_Kept=[Eve_Memory[i] for i in matches_Eve]
+            # Create new bit-string for Eve with the measurements corresponding
+            # to basis-matching rounds
+            Eve_Bitstring = []
+            for i in matching_indices:
+                Eve_Bitstring.append(Eve_Memory[i])
+
+            # Get raw key from the bitstring that includes the test rounds
+            Eve_raw_key = get_raw_key(Eve_Bitstring, test_indices)
 
             if len(Rext_Eve)!=1:
-                key=Ext(Eve_Kept,Rext_Eve)
-                print("\n Eve's measurements for basis-matching rounds:"+str(Eve_Kept))
-                print("\n Eve generated the key: "+str(key))
+                print("\n Eve's measurements for basis-matching rounds:"+str(Eve_Bitstring))
+                print(" Eve's raw key:"+str(Eve_raw_key))
+                print(" Eve heard from Alice this random seed:", Rext_Eve)
+                key=Ext(Eve_raw_key,Rext_Eve)
+                print("Eve generated the key: "+str(key))
             else:
                 print("\n Eve aborts")
 

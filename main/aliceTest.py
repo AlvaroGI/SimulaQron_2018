@@ -100,14 +100,6 @@ def Auth_Recv_Classical(here, there):
 
 #----------------------------------------
 
-def IceWall():
-    '''Function used for debugging. Not used in the final version.'''
-    x = 1
-    while x == 1:
-        pass
-
-#----------------------------------------
-
 def get_raw_key(xo, test_ind):
     '''Get a list with the elements from xo whose indices are not in test_ind.
         ---Inputs---
@@ -166,7 +158,21 @@ def main():
 
             # Send qubit to Bob (via Eve)
             Alice.sendQubit(q, "Eve") # Comment out this line and execute a few times to flush.
-
+        
+        
+        #---------------------------------------------
+        #RECEIPT AND CONFIRMATION
+        #---------------------------------------------
+        rec=list(Auth_Recv_Classical(Alice, 'Eve'))
+        
+        if rec[0]==n:
+            print('\n Bob confirmed to Alice that he received '+str(rec[0])+' qubits')
+            Auth_Send_Classical(Alice,'Eve',n, False)
+        else:
+            print('\n(!) Bob\'s confirmation of receipt was wrong. Alice is aborting')
+            Auth_Send_Classical(Alice,'Eve',0, False)
+            exit()
+        
         #----------------------------------------
         # CHECK MATCHING BASES
         #----------------------------------------
@@ -226,6 +232,7 @@ def main():
         #-------------------------------------------------
         # GENERATE PRIVATE KEY (PRIVACY AMPLIFICATION)
         #-------------------------------------------------
+        print('\n-----------------Privacy Amplification--------------------')
         # Get raw key from the bitstring that included the test rounds
         Alice_raw_key = get_raw_key(Alice_Bitstring, test_indices)
 

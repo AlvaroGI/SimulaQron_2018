@@ -4,6 +4,7 @@ import random
 
 import numpy as np
 import argparse
+import time
 
 ################################################################################
 # PARSE ARGUMENTS
@@ -53,13 +54,6 @@ def Auth_Recv_Classical(here, there):                                           
     here.sendClassical(there, 100)
 
     return num                                                                                #
-
-#----------------------------------------
-
-def IceWall():
-    '''Function used for debugging. Not used in the final version.'''
-    while True:
-        pass
 
 #----------------------------------------
 
@@ -124,7 +118,18 @@ def main():
                 Bob_outputs.append(q.measure(inplace=False))
 
                 coun += 1
-
+        
+        #---------------------------------------------
+        #RECEIPT AND CONFIRMATION
+        #---------------------------------------------
+        print("\n-----------------Bob shall confirm receipt------------")
+        Auth_Send_Classical(Bob, 'Eve', coun, False)
+        confirm=Auth_Recv_Classical(Bob, 'Eve')
+        
+        if confirm[0]==0:
+            print('(!) Bob got message about aborting from Alice.')
+            exit()
+        
         #----------------------------------------
         # CHECK MATCHING BASES
         #----------------------------------------

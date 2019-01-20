@@ -58,14 +58,6 @@ def Auth_Recv_Classical(here, there):
 
 #----------------------------------------
 
-def IceWall():
-    '''Function used for debugging. Not used in the final version.'''
-    x = 1
-    while x == 1:
-        pass
-
-#----------------------------------------
-
 def get_raw_key(xo, test_ind):
     '''Get a list with the elements from xo whose indices are not in test_ind.
         ---Inputs---
@@ -126,7 +118,7 @@ def main():
                 Eve_basis_memory.append(basis)
                 Eve_Memory.append(q.measure(inplace=True))
 
-            # Attack 2: optimal attack using basis |0⟩+|+⟩, which yields the
+            # Attack 2: optimal attack using basis 1/sqrt(2)(|0>+|+>), which yields the
             #           maximum probability of guessing (0.854)
             if attack == 2:
                 q.rot_Y(240)
@@ -144,13 +136,24 @@ def main():
             print("\n           her bases used were:   ", Eve_basis_memory)
         elif attack == 2:
             print("\n Eve done, her measurements were: ", Eve_Memory)
-            print("\n           (Her basis was always the same for this attack: |0⟩+|+⟩)")
+            print("\n(Her basis was always the same for this attack: 1/sqrt(2)*(|0>+|+>) )")
         else:
             print("\n Eve did not perform any attack.")
 
         #--------------------------------------------------------------
         # CLASSICAL COMMUNICATION FOR TEST AND PRIVACY AMPLIFICATION
         #--------------------------------------------------------------
+        
+        #Receive and forward Bob's and Alice's receipt
+        rec = Auth_Recv_Classical(Eve, 'Bob')
+        rec=list(rec)
+        Auth_Send_Classical(Eve, 'Alice', rec, False)
+        
+        confirm=list(Auth_Recv_Classical(Eve, 'Alice') )
+        Auth_Send_Classical(Eve, 'Bob', confirm, False)
+        time.sleep(0.3)
+        
+        
         # Receive and forward string associated with Bob's basis
         Bob_basis_Eve = Auth_Recv_Classical(Eve, 'Bob')
         Bob_basis_Eve = list(Bob_basis_Eve)
@@ -190,6 +193,7 @@ def main():
 
             if Rext_Eve[0]==222: # 222 is the keyword to abort protocol
                 print("\n Eve aborts")
+                exit()
             else:
                 print("\n Eve's measurements for basis-matching rounds:"+str(Eve_Bitstring))
                 print(" Eve's raw key:"+str(Eve_raw_key))

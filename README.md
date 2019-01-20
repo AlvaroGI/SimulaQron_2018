@@ -15,6 +15,7 @@ You can find more information about the theory behind the protocol in 'Report.pd
 # Usage
 #### Requirements
 Be sure to have SimulaQron installed and running on your computer (see [SimulaQron guide](https://softwarequtech.github.io/SimulaQron/html/GettingStarted.html)).
+We recommend to place this repository inside the SimulaQron directory.
 
 #### Before running
 First, be sure to have executed 

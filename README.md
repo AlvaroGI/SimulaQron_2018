@@ -8,7 +8,7 @@ January 2018 - TU Delft
 # Problem description
 Alice and Bob want to generate a shared private key. To do that, we implement a version of the BB84 protocol. Alice will create a set of BB84 states, measure them, and send them to Bob. Eve may or may not attack (attacks consist in measuring the qubits in different bases). Bob will measure these qubits in the Hadamard or Standard basis (at random). Then, Alice and Bob will check the rounds for which they used the same bases and discard the rest of the rounds. Next, they perform a test on some of the remaining measurements to evaluate the error rate. If this rate is larger than a threshold, they abort the protocol. If the error rate is smaller than the threshold, they perform a privacy amplification step. Alice generates a random seed and sends it to Bob. Finally, they XOR the random seed with the raw key (remaining bits after removing the test rounds) to obtain their shared private one-bit key.
 
-You can find more information about the theory behind the protocol in 'Summary.pdf'.
+You can find more information about the theory behind the protocol in 'Report.pdf'.
 
 **Note**: all the users provide a receipt of the communication after receiving some information.
 

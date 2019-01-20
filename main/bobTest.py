@@ -118,18 +118,18 @@ def main():
                 Bob_outputs.append(q.measure(inplace=False))
 
                 coun += 1
-        
+
         #---------------------------------------------
-        #RECEIPT AND CONFIRMATION
+        # RECEIPT AND CONFIRMATION
         #---------------------------------------------
-        print("\n-----------------Bob shall confirm receipt------------")
+        print("\n-----------------Bob confirmation of receipt------------")
         Auth_Send_Classical(Bob, 'Eve', coun, False)
         confirm=Auth_Recv_Classical(Bob, 'Eve')
-        
+
         if confirm[0]==0:
             print('(!) Bob got message about aborting from Alice.')
             exit()
-        
+
         #----------------------------------------
         # CHECK MATCHING BASES
         #----------------------------------------
@@ -181,7 +181,7 @@ def main():
         # Receive the random seed from Alice (for extractor)
         R_ext = list(Auth_Recv_Classical(Bob, 'Eve'))
         if R_ext == [222]:
-            print("(!) Errorrate is too high, Bob aborts protocol \n")
+            print("(!) Error rate is too high, Bob aborts protocol \n")
             exit()
 
         # Apply extractor on Bob's raw key

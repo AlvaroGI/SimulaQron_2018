@@ -143,17 +143,17 @@ def main():
         #--------------------------------------------------------------
         # CLASSICAL COMMUNICATION FOR TEST AND PRIVACY AMPLIFICATION
         #--------------------------------------------------------------
-        
         #Receive and forward Bob's and Alice's receipt
         rec = Auth_Recv_Classical(Eve, 'Bob')
         rec=list(rec)
         Auth_Send_Classical(Eve, 'Alice', rec, False)
-        
+
         confirm=list(Auth_Recv_Classical(Eve, 'Alice') )
         Auth_Send_Classical(Eve, 'Bob', confirm, False)
-        time.sleep(0.3)
-        
-        
+        if confirm[0]==0:
+            print('(!) Bob got message about aborting from Alice.')
+            exit()
+
         # Receive and forward string associated with Bob's basis
         Bob_basis_Eve = Auth_Recv_Classical(Eve, 'Bob')
         Bob_basis_Eve = list(Bob_basis_Eve)
@@ -193,7 +193,6 @@ def main():
 
             if Rext_Eve[0]==222: # 222 is the keyword to abort protocol
                 print("\n Eve aborts")
-                exit()
             else:
                 print("\n Eve's measurements for basis-matching rounds:"+str(Eve_Bitstring))
                 print(" Eve's raw key:"+str(Eve_raw_key))

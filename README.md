@@ -34,8 +34,8 @@ in the 'main' directory.
 #### Running the project
 You can find the codes needed to run the simulations in the 'main' directory:
 * **startAll.sh**: used to start the simulated network.
-* **run.sh**: execute this code (`sh run.sh`) to run the simulation. You can externally parse the following arguments:
-	- n - number of key bits to generate, i.e., number of times to run the protocol. (You can also execute **run_simple.sh** to do a single run of the protocol, although this is equivalent to n=1, which is set by default in **run.sh**).
+* **run.sh** / **run_simple.sh**: execute (`sh run.sh`) to run the simulation. You can externally parse the following arguments:
+	- n - number of key bits to generate, i.e., number of times to run the protocol. You can also execute **run_simple.sh**, to do a single run of the protocol, although this is equivalent to n=1, which is set by default in **run.sh**. IMPORTANT: we checked that **run.sh** works properly on OS X but not on Linux/Windows: if you have any trouble with it, use **run_simple.sh** instead.
 	- q - number of qubits (up to 20).
 	- a - no attack (0), attack measuring in Hadamard or Standard basis at random (1), or attack using the optimal POVM (2).
 	- t - fraction of matching-basis rounds used for test.
@@ -52,6 +52,8 @@ A longer key can also be obtained by using an extractor that leads to a larger a
 Sometimes, a process is running in the local ports that we use to create the simulated network. If you get a related error, you can restart those ports. If you are using OS X, you can simply run `sh clean_ports_Mac.sh`. Note that this will kill all the processes running on local ports 8801 to 8809. Be sure that you are not killing something important.
 
 If there is an issue with the communication in the network, you can restart the local ports, then run `sh startAll.sh`, and finally wait for a while until all the 'remaining communications' from previous processes are done.
+
+We checked that **run.sh** works properly on OS X but not on Linux/Windows: if you have any trouble with it, use **run_simple.sh** instead.
 
 # Useful resources
 * [This project Github](https://github.com/AlvaroGI/SimulaQron_2018).

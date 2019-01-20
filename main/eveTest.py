@@ -188,15 +188,14 @@ def main():
             # Get raw key from the bitstring that includes the test rounds
             Eve_raw_key = get_raw_key(Eve_Bitstring, test_indices)
 
-            if len(Rext_Eve)!=1:
+            if Rext_Eve[0]==222: # 222 is the keyword to abort protocol
+                print("\n Eve aborts")
+            else:
                 print("\n Eve's measurements for basis-matching rounds:"+str(Eve_Bitstring))
                 print(" Eve's raw key:"+str(Eve_raw_key))
                 print(" Eve heard from Alice this random seed:", Rext_Eve)
                 key=Ext(Eve_raw_key,Rext_Eve)
                 print("Eve generated the key: "+str(key))
-            else:
-                print("\n Eve aborts")
-
 
 ################################################################################
 # RUN

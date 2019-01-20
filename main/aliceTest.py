@@ -220,7 +220,7 @@ def main():
 
         if error_rate > error_threshold:
            print("(!) error_rate too high, Alice aborts protocol")
-           Auth_Send_Classical(Alice,'Eve', 222, False)
+           Auth_Send_Classical(Alice,'Eve', 222, False) # 222 is the keyword to abort protocol
            exit()
 
         #-------------------------------------------------
@@ -240,8 +240,10 @@ def main():
 
         # Save key into a file
         date_ = str(datetime.now().date())
-        time_ = str(datetime.now().time())
-        file = open("logs_keys/%s_%s.txt" % (date_,time_),"a")
+        hour_ = str(datetime.now().hour)
+        minute_ = str(datetime.now().minute)
+        second_ = str(datetime.now().second)
+        file = open("logs_keys/%s_%s_%s_%s.txt" % (date_,hour_,minute_,second_),"a")
         file.write(str(key))
         file.close()
 

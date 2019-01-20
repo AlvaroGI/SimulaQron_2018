@@ -24,9 +24,6 @@ e) error_threshold=${OPTARG};;
 esac
 done
 
-for ((i=1;i<=n_key;i++)); do
-  python aliceTest.py --q $n_qubits --e $error_threshold &
-  python bobTest.py --t $f_test &
-  python eveTest.py --a $attack &
-  sleep 7
-done
+python aliceTest.py --q $n_qubits --e $error_threshold &
+python bobTest.py --t $f_test &
+python eveTest.py --a $attack &

@@ -213,7 +213,7 @@ def main():
         for i in range(0,len(test_Alice)):
             if test_Alice[i] != test_Bob[i]:
                 error_count=error_count+1
-        print(" Alice concludes there have been ", error_count, "errors \n")
+        print(" Alice concludes there have been ", error_count, "errors out of", len(test_Alice), "test rounds \n")
 
         error_rate = error_count/len(test_Alice)
         print("The error rate is", error_rate)

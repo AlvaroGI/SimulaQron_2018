@@ -188,6 +188,10 @@ def main():
         print("\n Alice used the bases:", basis, "\n   Bob used the bases:", Bob_basis,"\n")
         matches = list(matching_indices)
         print("\n Alice decides to keep measurements number", matches, "(matching bases)")
+        
+        if len(matches)==0:
+            print("\n (!)The amount of qubits after matching bases is too low to generate key.")
+            exit()
 
         # Send matches to Bob (via Eve)
         Auth_Send_Classical(Alice, 'Eve', matches, False)
@@ -228,14 +232,18 @@ def main():
            print("(!) error_rate too high, Alice aborts protocol")
            Auth_Send_Classical(Alice,'Eve', 222, False) # 222 is the keyword to abort protocol
            exit()
-
+        
         #-------------------------------------------------
         # GENERATE PRIVATE KEY (PRIVACY AMPLIFICATION)
         #-------------------------------------------------
         print('\n-----------------Privacy Amplification--------------------')
         # Get raw key from the bitstring that included the test rounds
         Alice_raw_key = get_raw_key(Alice_Bitstring, test_indices)
-
+        
+        if len(Alice_raw_key)==0:
+            print("\n (!)The amount of qubits after testing is too low to generate key.")
+            exit()
+        
         # Create the random seed for the randomness extractor
         R_ext = [random.randint(0, 1) for a in range(0, len(Alice_raw_key))]
 

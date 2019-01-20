@@ -151,7 +151,7 @@ def main():
         confirm=list(Auth_Recv_Classical(Eve, 'Alice') )
         Auth_Send_Classical(Eve, 'Bob', confirm, False)
         if confirm[0]==0:
-            print('(!) Bob got message about aborting from Alice.')
+            print('(!) Eve got message about aborting from Alice.')
             exit()
 
         # Receive and forward string associated with Bob's basis
